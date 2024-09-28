@@ -1,0 +1,33 @@
+.header {
+  background-color: red;
+  border-bottom-left-radius: 60px;
+  border-bottom-right-radius: 60px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.25);
+  background: #fefefe;
+
+  h1 {
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: "VN Seventies";
+    font-size: 80px;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  a {
+    color: #000;
+    font-family: "Beausite Classic Trial";
+    text-decoration: none;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    margin: 20px;
+  }
+
+  i {
+    margin-left: 10px;
+  }
+}
