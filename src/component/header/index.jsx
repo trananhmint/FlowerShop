@@ -1,6 +1,8 @@
 import React from "react";
 import "./index.scss";
+import logo from "./../../assets/Espoir.png";
 import { Link } from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 function Header() {
   return (
@@ -10,14 +12,16 @@ function Header() {
         <Link to="/">Flowers</Link>
         <Link to="/">Our Story</Link>
       </div>
-      <div className="header_col">
-        <h1>Espoir</h1>
+      <div className="header_logo">
+        {/* <h1>Espoir</h1> */}
+        <img src={logo} alt="" />
       </div>
       <div className="header_col">
-        <i className="fa fa-search"></i>
-        <i className="fa fa-comments"></i>
-        <i className="fa fa-bell"></i>
-        <i className="fa fa-shopping-cart"></i>
+        <i className="bi bi-search"></i>
+        <i className="bi bi-chat"></i>
+        <i className="bi bi-bell"></i>
+        <i className="bi bi-cart3"></i>
+        <button className="header_col">Login</button>
       </div>
     </div>
   );

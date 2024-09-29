@@ -1,6 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { GoogleAuthProvider } from "firebase/auth";
+
+// https://www.figma.com/design/PGsvxc0aTVX8Tesnl85KrL/Espoir-(Copy)?node-id=0-1&t=F96OgfJOQ2sOPpKv-1
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
