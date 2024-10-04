@@ -20,12 +20,15 @@ function App() {
           path: "",
           element: <Home />,
         },
+
         {
           path: "search",
           element: <SearchPage />,
         },
+        
       ],
     },
+    
     {
       path: "login",
       element: <LoginPage />,

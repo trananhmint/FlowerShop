@@ -3,8 +3,14 @@ import "./index.scss";
 import logo from "./../../assets/Espoir.png";
 import { Link } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Badge } from "antd";
+import { useSelector } from "react-redux";
 
 function Header() {
+
+  const cart = useSelector((store) => store.cart);
+
+
   return (
     <div className="header">
       <div className="header_col">
@@ -20,7 +26,9 @@ function Header() {
         <i className="bi bi-search"></i>
         <i className="bi bi-chat"></i>
         <i className="bi bi-bell"></i>
-        <i className="bi bi-cart3"></i>
+        <Badge count = {cart.length}>
+          <i className="bi bi-cart3"></i>
+        </Badge>
         <button className="header_col">Login</button>
       </div>
     </div>
