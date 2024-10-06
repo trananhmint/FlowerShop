@@ -1,39 +1,54 @@
 import { Avatar, Rate } from "antd";
-import React from "react";
-import "./index.scss";
+import React, { useState } from "react";
+import "./index copy.scss";
+import { Rating } from "react-simple-star-rating";
 
 function ProductCard() {
+  const [isFavor, setIsFavor] = useState(false);
+
   return (
     <div className="product-card">
-      <img
-        src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1a2ab968-040e-41e2-a7d6-432b0d7956c4/dgg71ev-9d3aadcb-5271-4f4b-ab1d-abbf561362b9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzFhMmFiOTY4LTA0MGUtNDFlMi1hN2Q2LTQzMmIwZDc5NTZjNFwvZGdnNzFldi05ZDNhYWRjYi01MjcxLTRmNGItYWIxZC1hYmJmNTYxMzYyYjkucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.jRZtAxYP7Ns6Gtw3oLugzi_Qw-B_2wTCXZ_3hOEAzBM"
-        alt=""
-      />
+      <div className="product-img">
+        <img
+          // src="https://cdn.britannica.com/36/82536-050-7E968918/Shasta-daisies.jpg"
+          src="https://th.bing.com/th/id/OIP.D3aC9fNNvh7p2DAm-OTQywHaFj?rs=1&pid=ImgDetMain"
+          alt=""
+        />
 
-      <Avatar
-        size={50}
-        className="avatar"
-        src="https://i.redd.it/sxb95sif7ys81.png"
-      />
+        <Avatar
+          size={45}
+          className="avatar"
+          src="https://shopgarena.net/wp-content/uploads/2022/07/Hinh-Dai-Dien-Tuong-Lien-Quan-Cute.jpg"
+        />
+      </div>
 
       <div className="tags">
-        <span className="tag">Fresh</span>
-        <span className="tag">wedding</span>
+        <span className="tag">FRESH</span>
+        <span className="tag">WEDDING</span>
       </div>
+      <div className="info">
+        <span>Flower title</span>
+        {/* <Rate size={20} value={4.5} disabled allowHalf /> */}
+        <div>
+          <Rating size={14} readonly initialValue={4} /> (100)
+        </div>
 
-      <h3>Flower title</h3>
-      <Rate value={4.5} disabled allowHalf />
-
-      <div className="price">
-        <h2>$50</h2>
+        <div className="price">
+          <span>$50.00</span>
+          <span>$100.00</span>
+        </div>
       </div>
-
-      <div className="favorite">
+      <div
+        className="favorite"
+        onClick={() => setIsFavor(!isFavor)}
+        style={{
+          color: isFavor ? "red" : "#9f9f9f",
+        }}
+      >
         <i className="fa fa-heart"></i>
       </div>
-
       <div className="cart">
-        <i className="fa fa-shopping-cart"></i>
+        <i class="bi bi-plus-lg"></i>
       </div>
     </div>
   );
