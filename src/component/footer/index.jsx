@@ -3,7 +3,7 @@ import "./index.css";
 import flowerImg from "./../../assets/footer-flower.png";
 import butterflyImg from "./../../assets/butterfly.png";
 import footerImg from "./../../assets/footer-bgr.png";
-import espoir from "./../../assets/Espoir.png"
+import espoir from "./../../assets/Espoir.png";
 
 function Footer() {
   return (
@@ -17,7 +17,7 @@ function Footer() {
             <img src={espoir} alt="" />
             {/* <span className="">Espoir</span> */}
           </div>
-          <d iv className="policy">
+          <div className="policy">
             <ul>
               <li className="policy_title">Products</li>
               <li>Product List</li>
@@ -25,13 +25,13 @@ function Footer() {
               <li>Combo & Sets</li>
             </ul>
             <ul>
-              <li  className="policy_title">About Us</li>
+              <li className="policy_title">About Us</li>
               <li>Brand story</li>
               <li>Core value</li>
               <li>Manufactory</li>
             </ul>
             <ul>
-              <li class="policy_title">Terms & Policy</li>
+              <li className="policy_title">Terms & Policy</li>
               <li>Security Policy</li>
               <li>Delivery Policy</li>
               <li>Usage Policy</li>
@@ -43,13 +43,13 @@ function Footer() {
               <li className="contact_logo">
                 <i className="bi bi-facebook"></i>
                 <i className="bi bi-instagram"></i>
-                <i class="bi bi-youtube"></i>
+                <i className="bi bi-youtube"></i>
               </li>
             </ul>
-          </d>
+          </div>
         </div>
       </div>
-      <div className ="copy-right">© 2024 Espoir. All Rights Reserved.</div>
+      <div className="copy-right">© 2024 Espoir. All Rights Reserved.</div>
     </div>
   );
 }

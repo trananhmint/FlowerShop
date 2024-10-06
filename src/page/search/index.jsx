@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { Checkbox, Divider, Select } from "antd";
 import ProductCard from "../../component/product-card";
+import axios from "axios";
 
 function SearchPage() {
+  const [flowers, setFlowers] = useState([]);
   const CheckboxGroup = Checkbox.Group;
   const plainOptions = ["Apple", "Pear", "Orange"];
-  const defaultCheckedList = ["Apple", "Orange"];
+  const defaultCheckedList = [];
   const [checkedList, setCheckedList] = useState(defaultCheckedList);
   const checkAll = plainOptions.length === checkedList.length;
   const indeterminate =
@@ -17,6 +19,20 @@ function SearchPage() {
   const onCheckAllChange = (e) => {
     setCheckedList(e.target.checked ? plainOptions : []);
   };
+
+  const fetchFlower = async () => {
+    const response = await axios.get(
+      "https://66fffcca4da5bd237552c5b6.mockapi.io/flower"
+    );
+
+    setFlowers(response.data);
+    console.log(response.data);
+  };
+
+  useEffect(() => {
+    fetchFlower();
+  }, []);
+
   return (
     <div>
       <div className="search">
@@ -59,16 +75,7 @@ function SearchPage() {
           </div>
           <div className="search_content">
             <div className="product-list">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+              {flowers.map(flower => <ProductCard  flower = {flower}/>)}
             </div>
           </div>
         </div>
