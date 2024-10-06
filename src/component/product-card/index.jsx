@@ -1,6 +1,6 @@
 import { Avatar, Rate } from "antd";
 import React, { useState } from "react";
-import "./index copy.scss";
+import "./index1.scss";
 import { Rating } from "react-simple-star-rating";
 
 function ProductCard() {
