@@ -18,9 +18,16 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
+<<<<<<< HEAD
   getItem("Category", "category", <PieChartOutlined />),
   getItem("Flower", "flower", <PieChartOutlined />),
   getItem("Even", "even", <PieChartOutlined />),
+=======
+  getItem("Category", "category", <PieChartOutlined/>),
+  getItem("Flower", "flower", <PieChartOutlined/>),
+  getItem("Order", "order", <PieChartOutlined/>),
+  getItem("Account", "account", <PieChartOutlined/>),
+>>>>>>> origin/main
 ];
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -74,7 +81,11 @@ const Dashboard = () => {
               borderRadius: borderRadiusLG,
             }}
           >
+<<<<<<< HEAD
             <Outlet />
+=======
+            <Outlet/>
+>>>>>>> origin/main
           </div>
         </Content>
         <Footer
@@ -88,4 +99,8 @@ const Dashboard = () => {
     </Layout>
   );
 };
+<<<<<<< HEAD
 export default Dashboard;
+=======
+export default Dashboard;
+>>>>>>> origin/main

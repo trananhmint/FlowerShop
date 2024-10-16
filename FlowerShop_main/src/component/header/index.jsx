@@ -7,8 +7,15 @@ import { Badge } from "antd";
 import { useSelector } from "react-redux";
 
 function Header() {
+<<<<<<< HEAD
   const cart = useSelector((store) => store.cart);
 
+=======
+
+  const cart = useSelector((store) => store.cart);
+
+
+>>>>>>> origin/main
   return (
     <div className="header">
       <div className="header_col">
@@ -24,6 +31,7 @@ function Header() {
         <i className="bi bi-search"></i>
         <i className="bi bi-chat"></i>
         <i className="bi bi-bell"></i>
+<<<<<<< HEAD
         <Link to="/cart">
           <Badge count={cart.length}>
             <i className="bi bi-cart3"></i>
@@ -32,6 +40,12 @@ function Header() {
         <Link to={"/login"}>
           <button className="header_col">Login</button>
         </Link>
+=======
+        <Badge count = {cart.length}>
+          <i className="bi bi-cart3"></i>
+        </Badge>
+        <button className="header_col">Login</button>
+>>>>>>> origin/main
       </div>
     </div>
   );

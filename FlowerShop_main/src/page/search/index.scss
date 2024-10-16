@@ -1,8 +1,13 @@
 .search {
   display: flex;
   gap: 42px;
+<<<<<<< HEAD
   min-height: 100vh;
   padding: 15px 10px 15px 10px;
+=======
+  height: 100vh;
+  padding: 20px 40px 20px 28px;
+>>>>>>> origin/main
   background-color: #e3e3e3;
 
   &_option {
@@ -33,14 +38,22 @@
       background-color: #fff;
       transform: translateY(-20px);
       z-index: 1;
+<<<<<<< HEAD
       margin: 0 5px;
       padding: 50px 115px;
+=======
+      margin: 0 6px;
+      padding: 50px 20px;
+>>>>>>> origin/main
 
       .product-list {
         display: flex;
         gap: 30px;
         flex-wrap: wrap;
+<<<<<<< HEAD
         color: #333;
+=======
+>>>>>>> origin/main
       }
     }
   }
