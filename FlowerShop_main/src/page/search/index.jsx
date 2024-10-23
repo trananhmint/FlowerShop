@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
-import "./index.scss";
-import { Checkbox, Divider, Select } from "antd";
+import "./index.css";
+import { Checkbox, Divider, Pagination, Select } from "antd";
 import ProductCard from "../../component/product-card";
 import axios from "axios";
 
 function SearchPage() {
   const [flowers, setFlowers] = useState([]);
   const CheckboxGroup = Checkbox.Group;
+
   const plainOptions = ["Apple", "Pear", "Orange"];
+
   const defaultCheckedList = [];
   const [checkedList, setCheckedList] = useState(defaultCheckedList);
+
   const checkAll = plainOptions.length === checkedList.length;
   const indeterminate =
     checkedList.length > 0 && checkedList.length < plainOptions.length;
+
+  const showTotal = (total) => `Total ${total} items`;
+
   const onChange = (list) => {
     setCheckedList(list);
   };
+
   const onCheckAllChange = (e) => {
     setCheckedList(e.target.checked ? plainOptions : []);
   };
@@ -33,30 +40,50 @@ function SearchPage() {
     fetchFlower();
   }, []);
 
+  const pagination1 = (productList, currentPage, productsPerPage) => {
+    const lastIndex = currentPage * productsPerPage;
+    const firstIndex = lastIndex - productsPerPage;
+    const currentProducts = productList.slice(firstIndex, lastIndex);
+
+    return (
+      <div className="product-list">
+        {currentProducts.map((flower) => (
+          <ProductCard flower={flower} />
+        ))}
+      </div>
+    );
+  };
+
+  const pagination = (productList, currentPage) => {
+    return <div></div>;
+  };
+
   return (
     <div>
       <div className="search">
         <div className="search_option">
-          <Dropdown title="Category">
-            <Checkbox
-              indeterminate={indeterminate}
-              onChange={onCheckAllChange}
-              checked={checkAll}
-            >
-              Check all
-            </Checkbox>
-            <CheckboxGroup
-              options={plainOptions}
-              value={checkedList}
-              onChange={onChange}
-            />
-          </Dropdown>
+          <div>
+            <Dropdown title="Category">
+              <Checkbox
+                indeterminate={indeterminate}
+                onChange={onCheckAllChange}
+                checked={checkAll}
+              >
+                Check all
+              </Checkbox>
+              <CheckboxGroup
+                options={plainOptions}
+                value={checkedList}
+                onChange={onChange}
+              />
+            </Dropdown>
+          </div>
         </div>
         <div className="search_product">
           <div className="search_header">
-            <h3>Search result for flower</h3>
+            <h4>Search results</h4>
             <div>
-              <span>Sort by:</span>
+              <span>Sort by: </span>
               <Select defaultValue="price-asc">
                 <Select.Option value="price-asc">
                   Price (Lowest to hightest)
@@ -74,8 +101,18 @@ function SearchPage() {
             </div>
           </div>
           <div className="search_content">
-            <div className="product-list">
-              {flowers.map(flower => <ProductCard  flower = {flower}/>)}
+            {flowers.map((flower) => (
+              <ProductCard flower={flower} />
+            ))}
+
+            <div className="pageNo">
+              <Pagination
+                size="small"
+                total={200}
+                showTotal={showTotal}
+                showSizeChanger
+                showQuickJumper
+              />
             </div>
           </div>
         </div>

@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
-=======
-import React from "react";
->>>>>>> origin/main
 import "./index.scss";
 import { Checkbox, Form, Input, Row } from "antd";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { googleProvider } from "../../config/firebase";
-<<<<<<< HEAD
 import axios from "axios";
 import Password from "antd/es/input/Password";
 import { jwtDecode } from "jwt-decode";
@@ -72,10 +67,6 @@ function LoginPage() {
     }
   };
 
-=======
-
-function LoginPage() {
->>>>>>> origin/main
   const handleLoginGoogle = () => {
     const auth = getAuth();
     signInWithPopup(auth, googleProvider)
@@ -87,7 +78,6 @@ function LoginPage() {
         const user = result.user;
         console.log(user);
         // IdP data available using getAdditionalUserInfo(result)
-<<<<<<< HEAD
         //
         axios
           .post("/api/account/signin-google", { token })
@@ -99,9 +89,6 @@ function LoginPage() {
             // Handle errors
             console.error(error);
           });
-=======
-        // ... 
->>>>>>> origin/main
       })
       .catch((error) => {
         // Handle Errors here.
@@ -115,7 +102,6 @@ function LoginPage() {
       });
   };
 
-<<<<<<< HEAD
   const handleEmail = (e) => {
     e.preventDefault();
     setEmail(e.target.value);
@@ -125,14 +111,11 @@ function LoginPage() {
     setPassword(e.target.value);
   };
 
-=======
->>>>>>> origin/main
   return (
     <div className="login">
       <div className="login_form">
         <h1>Login</h1>
 
-<<<<<<< HEAD
         <Form onFinish={handleLogin}>
           <Form.Item name="Email">
             <Input placeholder="Email" value={email} onChange={handleEmail} />
@@ -145,15 +128,6 @@ function LoginPage() {
               value={password}
               onChange={handlePassword}
             />
-=======
-        <Form>
-          <Form.Item>
-            <Input placeholder="Username" />
-          </Form.Item>
-
-          <Form.Item>
-            <Input placeholder="Password" type="password" />
->>>>>>> origin/main
           </Form.Item>
 
           <div className="login_option">
@@ -162,11 +136,7 @@ function LoginPage() {
           </div>
 
           <div className="login_button">
-<<<<<<< HEAD
             <button onClick={handleLogin}>Login</button>
-=======
-            <button>Login</button>
->>>>>>> origin/main
             <button className="guguru" onClick={handleLoginGoogle}>
               <img
                 src="https://storage.googleapis.com/support-kms-prod/ZAl1gIwyUsvfwxoW9ns47iJFioHXODBbIkrK"
@@ -176,11 +146,8 @@ function LoginPage() {
               Guguru
             </button>
           </div>
-<<<<<<< HEAD
 
           {error && <div style={{ color: "red" }}>{error}</div>}
-=======
->>>>>>> origin/main
         </Form>
       </div>
     </div>
