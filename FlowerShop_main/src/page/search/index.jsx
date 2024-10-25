@@ -3,9 +3,13 @@ import "./index.css";
 import { Checkbox, Divider, Pagination, Select } from "antd";
 import ProductCard from "../../component/product-card";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function SearchPage() {
   const [flowers, setFlowers] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const CheckboxGroup = Checkbox.Group;
 
   const plainOptions = ["Apple", "Pear", "Orange"];
@@ -13,49 +17,51 @@ function SearchPage() {
   const defaultCheckedList = [];
   const [checkedList, setCheckedList] = useState(defaultCheckedList);
 
+
   const checkAll = plainOptions.length === checkedList.length;
   const indeterminate =
     checkedList.length > 0 && checkedList.length < plainOptions.length;
 
   const showTotal = (total) => `Total ${total} items`;
-
-  const onChange = (list) => {
-    setCheckedList(list);
-  };
-
-  const onCheckAllChange = (e) => {
-    setCheckedList(e.target.checked ? plainOptions : []);
-  };
+  
 
   const fetchFlower = async () => {
+
     const response = await axios.get(
-      "https://66fffcca4da5bd237552c5b6.mockapi.io/flower"
+      "https://localhost:7026/api/flower/list-flowers",
+      {
+        params: {
+          pageIndex: 1,
+          pageSize: 20,
+          sortBy: "FlowerName",
+          sortDesc: true,
+          search: "",
+        },
+      }
     );
 
-    setFlowers(response.data);
-    console.log(response.data);
+    setFlowers(response.data.data);
+    setSearchResult(response.data);
   };
 
   useEffect(() => {
     fetchFlower();
   }, []);
 
-  const pagination1 = (productList, currentPage, productsPerPage) => {
-    const lastIndex = currentPage * productsPerPage;
-    const firstIndex = lastIndex - productsPerPage;
-    const currentProducts = productList.slice(firstIndex, lastIndex);
-
-    return (
-      <div className="product-list">
-        {currentProducts.map((flower) => (
-          <ProductCard flower={flower} />
-        ))}
-      </div>
-    );
+  const onChange = (list) => {
+    setCheckedList(list);
   };
 
-  const pagination = (productList, currentPage) => {
-    return <div></div>;
+  const handleCurrentPage = (pageNo) => {
+
+    setCurrentPage(pageNo)
+    console.log(pageNo);
+    
+    
+  }
+
+  const onCheckAllChange = (e) => {
+    setCheckedList(e.target.checked ? plainOptions : []);
   };
 
   return (
@@ -101,17 +107,21 @@ function SearchPage() {
             </div>
           </div>
           <div className="search_content">
-            {flowers.map((flower) => (
-              <ProductCard flower={flower} />
+            {flowers.map((flower, index) => (
+              <Link to={`/product/${flower.flowerName}`}>
+                <ProductCard key={index} flower={flower} />
+              </Link>
             ))}
 
             <div className="pageNo">
               <Pagination
                 size="small"
-                total={200}
+                current={currentPage}
+                onChange={(page) => handleCurrentPage(page)}
+                total={searchResult.totalCount}
                 showTotal={showTotal}
-                showSizeChanger
                 showQuickJumper
+                defaultPageSize={20}
               />
             </div>
           </div>

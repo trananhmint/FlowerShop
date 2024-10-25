@@ -3,12 +3,19 @@ import "./index.scss";
 import logo from "./../../assets/Espoir.png";
 import { Link } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { Badge } from "antd";
+import { Badge, ConfigProvider } from "antd";
 import { useSelector } from "react-redux";
+import HeadlessTippy from "@tippyjs/react/headless";
+import Tippy from "@tippyjs/react/";
+import "tippy.js/dist/tippy.css";
+import Wrapper from "../wrapper";
+import { Input } from "antd";
+import SearchItem from "../search-item";
+const { Search } = Input;
 
 function Header() {
   const cart = useSelector((store) => store.cart);
-
+  const onSearch = (value, _e, info) => console.log(info?.source, value);
   return (
     <div className="header">
       <div className="header_col">
@@ -21,8 +28,49 @@ function Header() {
         <img src={logo} alt="" />
       </div>
       <div className="header_col">
-        <i className="bi bi-search"></i>
-        <i className="bi bi-chat"></i>
+        <HeadlessTippy
+          interactive
+          placement="bottom"
+          render={(attrs) => (
+            <div className="box" tabIndex="-1" {...attrs}>
+              <Wrapper>
+                <ConfigProvider
+                  theme={{
+                    components: {
+                      Input: {
+                        activeBorderColor: "#FD6882",
+                        hoverBorderColor: "#FD6882",
+                      },
+                      Button: {
+                        defaultActiveBorderColor: "red",
+                        defaultHoverColor: "red",
+                        defaultHoverBorderColor: "#FD6882",
+                        defaultHoverBg: "#fff",
+                      },
+                    },
+                  }}
+                >
+                  <Search
+                    placeholder="Search here..."
+                    allowClear
+                    size="large"
+                    onSearch={onSearch}
+                  />
+                  <div className="search-result">
+                    <SearchItem />
+                    <SearchItem />
+                    <SearchItem />
+                  </div>
+                </ConfigProvider>
+              </Wrapper>
+            </div>
+          )}
+        >
+          <i className="bi bi-search"></i>
+        </HeadlessTippy>
+        <Tippy content="Chat">
+          <i className="bi bi-chat"></i>
+        </Tippy>
         <i className="bi bi-bell"></i>
         <Link to="/cart">
           <Badge count={cart.length}>

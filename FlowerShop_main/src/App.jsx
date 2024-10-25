@@ -39,7 +39,7 @@ function App() {
           element: <CheckOut />,
         },
         {
-          path: "product",
+          path: "product/:flowerName",
           element: <ProductDetail />
         }
       ], 

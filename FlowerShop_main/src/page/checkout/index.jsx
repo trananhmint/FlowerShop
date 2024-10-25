@@ -1,14 +1,9 @@
 import classNames from "classnames/bind";
 import styles from "./checkout.module.scss";
-// import { assets } from "../../assets";
+import { assets } from "../../assets";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { ConfigProvider, Input, Select } from "antd";
-
-import visa from "./../../assets/image/visa.png";
-import mastercard from "./../../assets/image/mastercard.png";
-import fieldPicture from "./../../assets/image/field-picture.png";
-import logo from "./../../assets/Espoir.png";
 
 const cx = classNames.bind(styles);
 
@@ -30,7 +25,7 @@ function CheckOut() {
         <div className={cx("content")}>
           <div className={cx("content-input")}>
             <img
-              src={fieldPicture}
+              src={assets.fieldPicture}
               alt="Field"
               className={cx("field-picture")}
             />
@@ -121,8 +116,8 @@ function CheckOut() {
                     </div>
 
                     <div className={cx("cards-display")}>
-                      <img src={mastercard} alt="mastercard" />
-                      <img src={visa} alt="visa" />
+                      <img src={assets.mastercard} alt="mastercard" />
+                      <img src={assets.visa} alt="visa" />
                     </div>
                   </div>
                 </div>

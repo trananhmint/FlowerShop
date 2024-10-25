@@ -14,6 +14,8 @@ function ProductCard({ flower }) {
     dispatch(add(flower));
   };
 
+  const tags = flower.tagNames.split(",");
+
   return (
     <div className="product-cards">
       <div className="product-img">
@@ -30,21 +32,24 @@ function ProductCard({ flower }) {
       </div>
 
       <div className="tags">
-        <span className="tag">Fresh</span>
-        <span className="tag">wedding</span>
+        {/* {
+          tags.map((tag) => {
+            return <span className="tag">{tag}</span>
+          })
+        } */}
       </div>
 
       <div className="info">
-        <span className="info_name">FlowerName</span>
+        <span className="info_name">{flower.flowerName}</span>
         <div>
-          <Rating size={14} readonly initialValue={4} /> (100)
+          <Rating size={15} readonly initialValue={4} /> (100)
         </div>
 
         <div className="price">
-          <h4>$400</h4>
-          <span className="price_old">$100.00</span>  
+          <h4>${flower.price}</h4>
+          <span className="price_old">${flower.oldPrice}</span>
         </div>
-      </div>  
+      </div>
 
       {/* <div className="info">
         <h3>{flower.FlowerName}</h3>
@@ -65,7 +70,7 @@ function ProductCard({ flower }) {
       </div>
 
       <div className="add-cart-icon" onClick={handleAddToCart}>
-        <i class="bi bi-plus-lg"></i>
+        <i className="bi bi-plus-lg"></i>
       </div>
     </div>
   );
