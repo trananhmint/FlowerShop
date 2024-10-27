@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.scss";
 import logo from "./../../assets/Espoir.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Badge, ConfigProvider } from "antd";
 import { useSelector } from "react-redux";
@@ -14,8 +14,12 @@ import SearchItem from "../search-item";
 const { Search } = Input;
 
 function Header() {
+  const navigate = useNavigate();
   const cart = useSelector((store) => store.cart);
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
+
+  const onSearch = (value, _e, info) => {
+    navigate("/search", {state : {search : value}})
+  };
   return (
     <div className="header">
       <div className="header_col">
@@ -46,6 +50,7 @@ function Header() {
                         defaultHoverColor: "red",
                         defaultHoverBorderColor: "#FD6882",
                         defaultHoverBg: "#fff",
+                        
                       },
                     },
                   }}
@@ -55,12 +60,13 @@ function Header() {
                     allowClear
                     size="large"
                     onSearch={onSearch}
+                    
                   />
-                  <div className="search-result">
+                  {/* <div className="search-result">
                     <SearchItem />
                     <SearchItem />
                     <SearchItem />
-                  </div>
+                  </div> */}
                 </ConfigProvider>
               </Wrapper>
             </div>
@@ -68,10 +74,10 @@ function Header() {
         >
           <i className="bi bi-search"></i>
         </HeadlessTippy>
-        <Tippy content="Chat">
+        {/* <Tippy content="Chat">
           <i className="bi bi-chat"></i>
-        </Tippy>
-        <i className="bi bi-bell"></i>
+        </Tippy> */}
+        {/* <i className="bi bi-bell"></i> */}
         <Link to="/cart">
           <Badge count={cart.length}>
             <i className="bi bi-cart3"></i>

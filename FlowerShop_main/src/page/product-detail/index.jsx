@@ -9,8 +9,9 @@ import axios from "axios";
 
 const ProductDetail = () => {
   const { flowerName } = useParams();
-  console.log(flowerName);
+
   const [flower, setFlower] = useState({});
+  const [quantity, setQuantity] = useState(1);
   // const [productList, setProductList] = useState([]);
 
   const fetchFlower = async () => {
@@ -59,6 +60,16 @@ const ProductDetail = () => {
     },
   ];
 
+  const handleQuantity = (quantity, type) => {
+    let num = Number(quantity)
+    if (type === "minus" && quantity > 1) {
+      setQuantity(num-1)
+    } else {
+      setQuantity(num+1);
+    }
+    // setQuantity(e.target.value);
+  }
+
   return (
     <div className="product-detail">
       <div className="detail">
@@ -104,9 +115,9 @@ const ProductDetail = () => {
             })}
           </div>
           <div className="quantity">
-            <button className="quantity_btn">--</button>
-            <input className="quantity_input" type="text" defaultValue={1} />
-            <button className="quantity_btn">+</button>
+            <button className="quantity_btn" onClick={() => handleQuantity(quantity, "minus")}>--</button>
+            <input className="quantity_input" type="text" inputMode="numeric" pattern="[0-9\s]" maxLength={3} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+            <button className="quantity_btn" onClick={() => handleQuantity(quantity, "plus")}>+</button>
             {flower.quantity} left
           </div>
           <div className="add-cart">

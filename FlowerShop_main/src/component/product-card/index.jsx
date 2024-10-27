@@ -32,11 +32,11 @@ function ProductCard({ flower }) {
       </div>
 
       <div className="tags">
-        {/* {
+        {
           tags.map((tag) => {
             return <span className="tag">{tag}</span>
           })
-        } */}
+        }
       </div>
 
       <div className="info">

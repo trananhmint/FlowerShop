@@ -5,6 +5,7 @@
   min-height: 100vh;
   padding: 15px 10px 15px 10px;
   background-color: #e3e3e3;
+
 }
 .search_option {
   width: 20%;
@@ -42,6 +43,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 30px;
+  text-decoration: none !important;
   /* transform: translateY(-20px); */
   /* z-index: 1; */
   margin: 20px 5px;
@@ -58,6 +60,7 @@
   flex-wrap: wrap;
   color: #333;
 }
+
 .pageNo {
   display: flex;
   justify-content: center;

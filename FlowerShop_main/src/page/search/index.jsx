@@ -3,12 +3,16 @@ import "./index.css";
 import { Checkbox, Divider, Pagination, Select } from "antd";
 import ProductCard from "../../component/product-card";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function SearchPage() {
+  const location = useLocation();
+  const searchValue = location.state.search;
+
   const [flowers, setFlowers] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
 
   const CheckboxGroup = Checkbox.Group;
 
@@ -31,14 +35,14 @@ function SearchPage() {
       "https://localhost:7026/api/flower/list-flowers",
       {
         params: {
-          pageIndex: 1,
+          pageIndex: currentPage,
           pageSize: 20,
           sortBy: "FlowerName",
           sortDesc: true,
-          search: "",
+          search: searchValue,
         },
       }
-    );
+    );    
 
     setFlowers(response.data.data);
     setSearchResult(response.data);
@@ -46,23 +50,22 @@ function SearchPage() {
 
   useEffect(() => {
     fetchFlower();
-  }, []);
+  }, [currentPage, searchValue]);
 
   const onChange = (list) => {
     setCheckedList(list);
   };
 
   const handleCurrentPage = (pageNo) => {
-
     setCurrentPage(pageNo)
-    console.log(pageNo);
-    
-    
+    console.log(pageNo);    
   }
 
   const onCheckAllChange = (e) => {
     setCheckedList(e.target.checked ? plainOptions : []);
   };
+
+
 
   return (
     <div>
@@ -108,7 +111,7 @@ function SearchPage() {
           </div>
           <div className="search_content">
             {flowers.map((flower, index) => (
-              <Link to={`/product/${flower.flowerName}`}>
+              <Link style={{textDecoration: "none", color: "#222222"}} to={`/product/${flower.flowerName}`}>
                 <ProductCard key={index} flower={flower} />
               </Link>
             ))}
