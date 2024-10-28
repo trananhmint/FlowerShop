@@ -111,7 +111,7 @@ function SearchPage() {
           </div>
           <div className="search_content">
             {flowers.map((flower, index) => (
-              <Link style={{textDecoration: "none", color: "#222222"}} to={`/product/${flower.flowerName}`}>
+              <Link style={{textDecoration: "none", color: "#222222"}} to={`/product/${flower.flowerId}`}>
                 <ProductCard key={index} flower={flower} />
               </Link>
             ))}

@@ -8,37 +8,46 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const ProductDetail = () => {
-  const { flowerName } = useParams();
+  const { flowerId } = useParams();
+  const token = JSON.parse(localStorage.getItem("token"));
 
   const [flower, setFlower] = useState({});
   const [quantity, setQuantity] = useState(1);
-  // const [productList, setProductList] = useState([]);
 
   const fetchFlower = async () => {
     const response = await axios.get(
-      "https://localhost:7026/api/flower/list-flowers",
+      "https://localhost:7026/api/flower/flower-detail",
       {
         params: {
-          pageIndex: 1,
-          pageSize: 20,
-          sortBy: "FlowerName",
-          sortDesc: true,
-          search: "",
+          flowerId,
+        },
+      }
+    );
+    setFlower(response.data);
+  };
+
+  const fetchAddCart = async (quantity) => {
+    const addCartForm = new FormData();
+    addCartForm.append("accessToken", token);
+    addCartForm.append("FlowerID", flowerId);
+    addCartForm.append("Quantity", quantity);
+
+    const response = await axios.post(
+      "https://localhost:7026/api/account/add-to-cart",
+      addCartForm,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       }
     );
 
-    setFlower(
-      response.data.data.find((f) => {
-        return f.flowerName === flowerName;
-      })
-    );
+    console.log(response.data);
   };
 
   useLayoutEffect(() => {
     fetchFlower();
   }, []);
-
 
   const imageList = ["pink", "yellow", "green", "red"];
 
@@ -61,14 +70,15 @@ const ProductDetail = () => {
   ];
 
   const handleQuantity = (quantity, type) => {
-    let num = Number(quantity)
     if (type === "minus" && quantity > 1) {
-      setQuantity(num-1)
+      setQuantity(quantity - 1);
     } else {
-      setQuantity(num+1);
+      setQuantity(quantity + 1);
     }
     // setQuantity(e.target.value);
-  }
+  };
+
+  const handleAddCart = () => {};
 
   return (
     <div className="product-detail">
@@ -98,14 +108,14 @@ const ProductDetail = () => {
           <div className="rating">
             4.0 <Rating size={20} readonly initialValue={4} /> | 100 reviews
           </div>
-          <div>Expire date</div>
+          <div>Expire date: {flower.dateExpiration}</div>
 
           <div className="prices">
             <h1 className="new">${flower.price}</h1>
             <h4 className="prices_old">${flower.oldPrice}</h4>
-            <h6 className="prices_sale">Sale 30%</h6>
+            <h6 className="prices_sale">Sale {flower.discount}</h6>
           </div>
-          <div className="colors">
+          {/* <div className="colors">
             {imageList.map((color, index) => {
               return (
                 <div key={index} className="chosen-color">
@@ -113,15 +123,38 @@ const ProductDetail = () => {
                 </div>
               );
             })}
-          </div>
+          </div> */}
           <div className="quantity">
-            <button className="quantity_btn" onClick={() => handleQuantity(quantity, "minus")}>--</button>
-            <input className="quantity_input" type="text" inputMode="numeric" pattern="[0-9\s]" maxLength={3} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-            <button className="quantity_btn" onClick={() => handleQuantity(quantity, "plus")}>+</button>
+            <button
+              disabled={quantity === 1}
+              className="quantity_btn"
+              onClick={() => handleQuantity(quantity, "minus")}
+            >
+              --
+            </button>
+            <input
+              className="quantity_input"
+              type="number"
+              inputMode="numeric"
+              maxLength={3}
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+            <button
+              className="quantity_btn"
+              onClick={() => handleQuantity(quantity, "plus")}
+            >
+              +
+            </button>
             {flower.quantity} left
           </div>
           <div className="add-cart">
-            <button className="cart-btn">Add to Cart</button>
+            <button
+              className="cart-btn"
+              onClick={() => fetchAddCart(flower.flowerId, quantity)}
+            >
+              Add to Cart
+            </button>
             <button className="wish-btn">Add to Wishlist</button>
           </div>
           <div className="shop">

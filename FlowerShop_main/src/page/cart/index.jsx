@@ -7,12 +7,38 @@ import axios from "axios";
 
 function Cart() {
   const token = JSON.parse(localStorage.getItem("token"));
+  // const [flowerList, setFlowerList] = useState([]);
+
   const [cart, setCart] = useState([]);
-  const [item, setItem] = useState({
-    orderDetail: "",
-    quantity: 1,
-    paidPrice: 0,
-  });
+  // const [item, setItem] = useState({
+  //   orderDetail: "",
+  //   quantity: 1,
+  //   paidPrice: 0,
+  // });
+
+  // const fetchFlower = async () => {
+
+  //   const response = await axios.get(
+  //     "https://localhost:7026/api/flower/list-flowers",
+  //     {
+  //       params: {
+  //         pageIndex: currentPage,
+  //         pageSize: 20,
+  //         sortBy: "FlowerName",
+  //         sortDesc: true,
+  //         search: searchValue,
+  //       },
+  //     }
+  //   );    
+  //   setFlowerList(response.data.data);
+  // };
+
+  // console.log(flowerList);
+  
+
+  
+
+  
 
   const fetchCart = async () => {
     const response = await axios.get(
@@ -38,14 +64,13 @@ function Cart() {
         params: {
           cartItemId: cartItemId,
           quantity: quantity,
-
         },
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    // console.log(response.data);
+
     fetchCart();
   };
 
@@ -57,6 +82,7 @@ function Cart() {
   const handleUpdateCart = (cartItemId, quantity) => {
     fetchUpdateCart(cartItemId, quantity);
   };
+
   return (
     <div className="cart-wrapper">
       <div className="cart">
@@ -67,7 +93,6 @@ function Cart() {
         </div>
         <div className="cart-body">
           {cart.map((item, index) => {
-            console.log(item);
             return (
               <CartItem
                 key={index}
@@ -95,18 +120,21 @@ function Cart() {
 const CartItem = ({ item, handleUpdateCart }) => {
   const [quantity, setQuantity] = useState(item.quantity);
   console.log(item.quantity, "quantity");
-  
+
   const onChangeQuantity = (e) => {
-    console.log(e.target.value);
-    
     const quantityValue = Number(e.target.value);
+    if (quantityValue < 1) {
+      setQuantity(1);
+      return;
+    }
+    console.log(e.target.value);
+
     let value = quantityValue - item.quantity;
     console.log(value, "value");
-    
-    setQuantity(quantityValue);
-    handleUpdateCart(item.flowerId, value)
-  }
 
+    setQuantity(e.target.value);
+    handleUpdateCart(item.flowerId, value);
+  };
 
   return (
     <div className="cart-item">
@@ -134,14 +162,29 @@ const CartItem = ({ item, handleUpdateCart }) => {
             <del>${500}</del>
           </p>
           <div className="quantity">
-            <button onClick={() => handleUpdateCart(item.flowerId, -1)}>--</button>
+            <button
+              disabled={quantity === 1}
+              onClick={() => {
+                handleUpdateCart(item.flowerId, -1);
+                setQuantity(quantity - 1);
+              }}
+            >
+              --
+            </button>
             <input
-              type="text"
+              type="number"
               inputMode="numeric"
-              value={item.quantity}
+              value={quantity}
               onChange={(e) => onChangeQuantity(e)}
             />
-            <button onClick={() => handleUpdateCart(item.flowerId, 1)}>+</button>
+            <button
+              onClick={() => {
+                handleUpdateCart(item.flowerId, 1);
+                setQuantity(quantity + 1);
+              }}
+            >
+              +
+            </button>
           </div>
 
           <p>${item.paidPrice}</p>

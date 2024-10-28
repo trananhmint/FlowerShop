@@ -1,10 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
 import Benefits from "../../component/benefits";
 import SectionTitle from "../../component/section-title";
-import ProductCard from "../../component/card";
+import ProductCard from "../../component/product-card";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Home() {
+  const [searchResult, setSearchResult] = useState([]);
+
+  const fetchFlower = async () => {
+    const response = await axios.get(
+      "https://localhost:7026/api/flower/list-flowers",
+      {
+        params: {
+          pageIndex: 1,
+          pageSize: 5,
+          sortBy: "FlowerName",
+          sortDesc: true,
+          search: "a",
+        },
+      }
+    );
+    setSearchResult(response.data.data);
+    console.log(searchResult);
+  };
+
+  console.log(searchResult);
+
+  useEffect(() => {
+    fetchFlower();
+  }, []);
+
+  console.log(searchResult);
+
+  
+  
+
   return (
     <div className="home">
       <img
@@ -16,46 +48,40 @@ function Home() {
 
       <SectionTitle title="HOA 20/10">
         <div className="product-list">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {searchResult.map((flower, index) => (
+            <Link
+              style={{ textDecoration: "none", color: "#222222" }}
+              to={`/product/${flower.flowerName}`}
+            >
+              <ProductCard key={index} flower={flower} />
+            </Link>
+          ))}
         </div>
       </SectionTitle>
 
       <SectionTitle title="HOA 20/10">
-        <div className="product-list">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+      <div className="product-list">
+          {searchResult.map((flower, index) => (
+            <Link
+              style={{ textDecoration: "none", color: "#222222" }}
+              to={`/product/${flower.flowerName}`}
+            >
+              <ProductCard key={index} flower={flower} />
+            </Link>
+          ))}
         </div>
       </SectionTitle>
 
       <SectionTitle title="HOA 20/10">
-        <div className="product-list">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+      <div className="product-list">
+          {searchResult.map((flower, index) => (
+            <Link
+              style={{ textDecoration: "none", color: "#222222" }}
+              to={`/product/${flower.flowerName}`}
+            >
+              <ProductCard key={index} flower={flower} />
+            </Link>
+          ))}
         </div>
       </SectionTitle>
     </div>
