@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
 import logo from "./../../assets/Espoir.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,15 +11,23 @@ import "tippy.js/dist/tippy.css";
 import Wrapper from "../wrapper";
 import { Input } from "antd";
 import SearchItem from "../search-item";
+import axios from "axios";
+import { useCart } from "../../context/CartContext";
 const { Search } = Input;
 
 function Header() {
   const navigate = useNavigate();
   const cart = useSelector((store) => store.cart);
 
+  const { cartItems } = useCart();
+  console.log(cartItems);
+
+  const token = JSON.parse(localStorage.getItem("token"));
+
   const onSearch = (value, _e, info) => {
-    navigate("/search", {state : {search : value}})
+    navigate("/search", { state: { search: value } });
   };
+
   return (
     <div className="header">
       <div className="header_col">
@@ -50,7 +58,6 @@ function Header() {
                         defaultHoverColor: "red",
                         defaultHoverBorderColor: "#FD6882",
                         defaultHoverBg: "#fff",
-                        
                       },
                     },
                   }}
@@ -60,7 +67,6 @@ function Header() {
                     allowClear
                     size="large"
                     onSearch={onSearch}
-                    
                   />
                   {/* <div className="search-result">
                     <SearchItem />
@@ -78,14 +84,33 @@ function Header() {
           <i className="bi bi-chat"></i>
         </Tippy> */}
         {/* <i className="bi bi-bell"></i> */}
-        <Link to="/cart">
-          <Badge count={cart.length}>
+        <button
+          className="cart_button"
+          disabled={!token}
+          onClick={() => navigate("/cart")}
+        >
+          <Badge count={cartItems.length}>
             <i className="bi bi-cart3"></i>
           </Badge>
-        </Link>
-        <Link to={"/login"}>
-          <button className="header_col">Login</button>
-        </Link>
+        </button>
+        {token ? (
+          <>
+            Welcome back!
+            <button
+              onClick={() => {
+                localStorage.removeItem("token");
+                window.location.reload();
+              }}
+              className="login_button"
+            >
+              Log Out
+            </button>
+          </>
+        ) : (
+          <Link to={"/login"}>
+            <button className="login_button">Login</button>
+          </Link>
+        )}
       </div>
     </div>
   );
