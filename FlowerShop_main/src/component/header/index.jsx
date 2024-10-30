@@ -20,7 +20,7 @@ function Header() {
   const cart = useSelector((store) => store.cart);
 
   const { cartItems } = useCart();
-  console.log(cartItems);
+  // console.log(cartItems);
 
   const token = JSON.parse(localStorage.getItem("token"));
 
@@ -31,7 +31,7 @@ function Header() {
   return (
     <div className="header">
       <div className="header_col">
-        <Link to="/">Menu</Link>
+        {/* <Link to="/">Menu</Link> */}
         <Link to="/">Flowers</Link>
         <Link to="/">Our Story</Link>
       </div>
