@@ -6,6 +6,8 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const token = JSON.parse(localStorage.getItem("token"));
+  console.log(token, "context");
+
   const [cartItems, setCartItems] = useState([]);
 
   const fetchAddCart = async (quantity) => {
@@ -38,9 +40,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const getCart = async () => {
-    const response = await getCartList(token);
-    console.log(response.length, 'getCartContext');
-    
+    const response = await getCartList(
+      JSON.parse(localStorage.getItem("token"))
+    );
+    console.log(response.length, "getCartContext");
+
     setCartItems(response);
   };
 
