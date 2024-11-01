@@ -6,15 +6,18 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { ConfigProvider, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CheckoutItem from "../../component/checkout-item";
+import { checkoutOrder, paymentPayOS } from "../../services/paymentService";
 
 const cx = classNames.bind(styles);
 
 function CheckOut() {
   const location = useLocation();
   const order = location.state.order;
-  console.log(order);
+  const token = JSON.parse(localStorage.getItem("token"));
+  const navigate = useNavigate();
+  const [paymentRadio, setPaymentRadio] = useState("payOS");
 
   const [provinceList, setProvinceList] = useState([]);
   const [districtList, setDistrictList] = useState([]);
@@ -40,13 +43,14 @@ function CheckOut() {
   });
 
   const checkout = {
-    orderDetailId: order.orderDetailId,
+    orderId: order.orderDetails[0].orderId,
     fullName: formValues.firstName + " " + formValues.lastName,
-    phone: formValues.phone,
+    phoneNumber: formValues.phone,
     address: [numberAddress, ward.name, district.name, province.name].join(
       ", "
     ),
   };
+
   const fetchProvinceList = async () => {
     const response = await axios.get("https://vapi.vnappmob.com/api/province/");
     if (response.status === 200) {
@@ -70,6 +74,17 @@ function CheckOut() {
     if (response.status === 200) {
       setWardList(response.data.results);
     }
+  };
+
+  const fetchCheckout = async () => {
+    const response = await checkoutOrder(token, checkout);
+    return response;
+  };
+
+  const fetchPayOS = async () => {
+    const response = await paymentPayOS(token, order.orderDetails[0].orderId);
+    console.log(response, "23456789");
+    return response;
   };
 
   useEffect(() => {
@@ -116,10 +131,6 @@ function CheckOut() {
     setNumberAddress(e.target.value);
   };
 
-  const handleFirstName = (e) => {
-    // set
-  };
-
   const handleInput = (e) => {
     const { name, value } = e.target; // Get the name and value from the input element
     setFormValues((prevValues) => ({
@@ -127,9 +138,23 @@ function CheckOut() {
       [name]: value, // Update the value of the field with the same name
     }));
   };
-  console.log(formValues);
-  console.log(checkout);
-  
+
+  const handleCheckout = async (paymentMethod) => {
+    const checkout = await fetchCheckout();
+    console.log(checkout);
+
+    if (checkout.statusCode === 200) {
+      console.log("assa");
+
+      if (paymentMethod === "payOS") {
+        console.log("sdfsdf"); 
+        const payOS = await fetchPayOS();
+        window.location.replace(payOS.checkoutUrl);
+      } else {
+        navigate("/");
+      }
+    }
+  };
 
   return (
     <div className={cx("checkout")}>
@@ -190,7 +215,12 @@ function CheckOut() {
                     />
                   </div>
 
-                  <Input name="phone" onChange={handleInput} placeholder="Phone Number" size="large" />
+                  <Input
+                    name="phone"
+                    onChange={handleInput}
+                    placeholder="Phone Number"
+                    size="large"
+                  />
                 </div>
 
                 <div className={cx("checkout-delivery")}>
@@ -267,6 +297,8 @@ function CheckOut() {
                         name="paymentMethod"
                         type="radio"
                         className={cx("radio")}
+                        value={"payOS"}
+                        onChange={(e) => setPaymentRadio(e.target.value)}
                       />
                       <label htmlFor="radio" className={cx("radioLabel")}>
                         {" "}
@@ -275,7 +307,11 @@ function CheckOut() {
                     </div>
 
                     <div className={cx("cards-display")}>
-                      <img style={{width: '100%', height: '100%', }} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTyOkJX2-C9OCpJq_Mz8WybGo2SS0gSfkHJw&s" alt="mastercard" />
+                      <img
+                        style={{ width: "100%", height: "100%" }}
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTyOkJX2-C9OCpJq_Mz8WybGo2SS0gSfkHJw&s"
+                        alt="mastercard"
+                      />
                       {/* <img src={assets.visa} alt="visa" /> */}
                     </div>
                   </div>
@@ -311,6 +347,8 @@ function CheckOut() {
                       name="paymentMethod"
                       type="radio"
                       className={cx("radio")}
+                      value={"cash"}
+                      onChange={(e) => setPaymentRadio(e.target.value)}
                     />
                     <label htmlFor="radio" className={cx("radioLabel")}>
                       <h4>Cash on Delivery</h4>
@@ -319,7 +357,12 @@ function CheckOut() {
                 </div>
               </div>
             </ConfigProvider>
-            <button className={cx("pay-now-btn")}>Pay now</button>
+            <button
+              className={cx("pay-now-btn")}
+              onClick={() => handleCheckout(paymentRadio)}
+            >
+              Pay now
+            </button>
           </div>
         </div>
         <div className={cx("payments")}>
@@ -329,9 +372,9 @@ function CheckOut() {
           </div>
 
           <div className={cx("checkout_products")}>
-            <CheckoutItem item={order} />
-            <CheckoutItem item={order} />
-            <CheckoutItem item={order} />
+            {order.orderDetails.map((item, index) => {
+              return <CheckoutItem key={index} item={item} />;
+            })}
           </div>
           {/* <div className={cx("subtotal-shipping")}>
             <div className={cx("subtotal")}>

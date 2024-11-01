@@ -14,6 +14,7 @@ export const getCartList = async (token) => {
     return response;
   } catch (error) {
     console.log(error);
+
   }
 };
 
@@ -40,7 +41,7 @@ export const addCart = async (token, quantity, flowerId) => {
         autoClose: 1500,
       });
     } else {
-      toast.error("Add flower failed !", {
+      toast.warning(response.message, {
         position: "top-right",
       });
     }
@@ -68,6 +69,8 @@ export const deleteCartItem = async (token, cartItemId) => {
 
 export const updateCartItem = async (token, cartItemId, quantity) => {
   try {
+    console.log(cartItemId, "cartItemId");
+    
     const response = await httpRequest.post(
       `account/update-cart-item`,
       {},
@@ -81,6 +84,8 @@ export const updateCartItem = async (token, cartItemId, quantity) => {
         },
       }
     );
+    console.log(response);
+    
 
     if (response.statusCode === 201) {
       toast.success("Update cart successfully", {
