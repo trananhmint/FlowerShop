@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import * as httpRequest from "../utils/httpRequest";
 import { useState } from "react";
 
-export const getCartList = async (token, cart=[]) => {
+export const getCartList = async (token, cart = []) => {
   try {
     const response = await httpRequest.get("account/list-cart-items", {
       params: {
@@ -44,6 +44,8 @@ export const addCart = async (token, quantity, flowerId) => {
     );
 
     if (response.statusCode === 201) {
+      console.log(response);
+
       toast.success("Your flower is added !", {
         position: "top-right",
         autoClose: 1500,
@@ -75,16 +77,16 @@ export const deleteCartItem = async (token, cartItemId) => {
   }
 };
 
-export const updateCartItem = async (token, cartItemId, quantity) => {
+export const updateCartItem = async (token, orderDetailId, quantity) => {
   try {
-    console.log(cartItemId, "cartItemId");
+    console.log(orderDetailId, "orderDetailId");
 
     const response = await httpRequest.post(
       `account/update-cart-item`,
       {},
       {
         params: {
-          cartItemId,
+          orderDetailId,
           quantity,
         },
         headers: {

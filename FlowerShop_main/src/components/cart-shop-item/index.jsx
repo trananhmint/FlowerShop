@@ -19,7 +19,7 @@ const CartShopItem = ({ info, handleUpdateCart, handleDeleteCart }) => {
 
     let value = inputValue - info.quantity;
     console.log(value, "value");
-    handleUpdateCart(info.flowerId, value);
+    handleUpdateCart(info.orderDetailId, value);
   };
 
   return (
@@ -38,7 +38,7 @@ const CartShopItem = ({ info, handleUpdateCart, handleDeleteCart }) => {
         <button
           disabled={quantity === 1}
           onClick={() => {
-            handleUpdateCart(info.flowerId, -1);
+            handleUpdateCart(info.orderDetailId, -1);
             setQuantity(quantity - 1);
           }}
         >
@@ -55,7 +55,7 @@ const CartShopItem = ({ info, handleUpdateCart, handleDeleteCart }) => {
         />
         <button
           onClick={() => {
-            handleUpdateCart(info.flowerId, 1);
+            handleUpdateCart(info.orderDetailId, 1);
             setQuantity(quantity + 1);
           }}
         >

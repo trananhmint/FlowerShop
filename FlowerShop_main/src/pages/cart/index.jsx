@@ -43,8 +43,8 @@ function Cart() {
     fetchCart(token);
   };
 
-  const fetchUpdateCart = async (cartItemId, quantity) => {
-    await updateCartItem(token, cartItemId, quantity);
+  const fetchUpdateCart = async (orderDetailId, quantity) => {
+    await updateCartItem(token, orderDetailId, quantity);
     fetchCart(token);
   };
 
@@ -52,8 +52,8 @@ function Cart() {
     fetchCart();
   }, []);
 
-  const handleUpdateCart = (cartItemId, quantity) => {
-    fetchUpdateCart(cartItemId, quantity);
+  const handleUpdateCart = (orderDetailId, quantity) => {
+    fetchUpdateCart(orderDetailId, quantity);
   };
 
   const handleDeleteCart = (cartItemId) => {
