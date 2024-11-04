@@ -1,9 +1,7 @@
 import { Avatar } from "antd";
 import React, { useState, useCallback } from "react";
 import "./index1.css";
-import { useCart } from "../../context/CartContext";
-import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { useCart } from "../../contexts/CartContext";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";

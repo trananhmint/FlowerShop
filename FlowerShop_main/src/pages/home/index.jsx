@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./index.scss";
-import Benefits from "../../component/benefits";
-import SectionTitle from "../../component/section-title";
-import ProductCard from "../../component/product-card";
+import Benefits from "../../components/benefits";
+import SectionTitle from "../../components/section-title";
+import ProductCard from "../../components/product-card";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -23,16 +23,16 @@ function Home() {
       }
     );
     setSearchResult(response.data.data);
-    console.log(searchResult);
+    // console.log(searchResult);
   };
 
-  console.log(searchResult);
+  // console.log(searchResult);
 
   useEffect(() => {
     fetchFlower();
   }, []);
 
-  console.log(searchResult);
+  // console.log(searchResult);
 
   return (
     <div className="home">

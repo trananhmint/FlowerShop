@@ -3,11 +3,11 @@ import styles from "./checkout.module.scss";
 import { assets } from "../../assets";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { ConfigProvider, Input, Select } from "antd";
+import { ConfigProvider, Form, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import CheckoutItem from "../../component/checkout-item";
+import CheckoutItem from "../../components/checkout-item";
 import { checkoutOrder, paymentPayOS } from "../../services/paymentService";
 
 const cx = classNames.bind(styles);
@@ -195,174 +195,140 @@ function CheckOut() {
                 },
               }}
             >
-              <div className={cx("checkout-input")}>
-                <div className={cx("checkout-contact")}>
-                  <h1>Contact</h1>
-                  <div className={cx("checkout-contact-name")}>
-                    <Input
-                      name="firstName"
-                      onChange={handleInput}
-                      placeholder="First Name"
-                      size="large"
-                      style={{ width: 335 }}
-                    />
-                    <Input
-                      name="lastName"
-                      onChange={handleInput}
-                      placeholder="Last Name"
-                      size="large"
-                      style={{ width: 335 }}
-                    />
-                  </div>
-
-                  <Input
-                    name="phone"
-                    onChange={handleInput}
-                    placeholder="Phone Number"
-                    size="large"
-                  />
-                </div>
-
-                <div className={cx("checkout-delivery")}>
-                  <h1>Address</h1>
-                  {/* <Input placeholder="Your Province" size="large" /> */}
-
-                  {/* <h4>Shipping method</h4> */}
-                  <div className={cx("checkout-delivery_address")}>
-                    <Select
-                      defaultValue="Select Province"
-                      size="default"
-                      // disabled
-                      style={{
-                        width: 680,
-                        backgroundColor: "#b4b4b4",
-                      }}
-                      onChange={handleProvince}
-                      options={provinceList.map((data) => {
-                        return {
-                          value: data.province_id,
-                          label: data.province_name,
-                        };
-                      })}
-                    />
-                    <Select
-                      defaultValue="Select District"
-                      size="default"
-                      // disabled
-                      style={{
-                        width: 680,
-                        backgroundColor: "#b4b4b4",
-                      }}
-                      onChange={handleDistrict}
-                      options={districtList.map((data) => {
-                        return {
-                          value: data.district_id,
-                          label: data.district_name,
-                        };
-                      })}
-                    />
-                    <Select
-                      defaultValue="Select Ward"
-                      size="default"
-                      // disabled
-                      style={{
-                        width: 680,
-                        backgroundColor: "#b4b4b4",
-                      }}
-                      onChange={handleWard}
-                      options={wardList.map((data) => {
-                        return {
-                          value: data.ward_id,
-                          label: data.ward_name,
-                        };
-                      })}
-                    />
-                    <Input
-                      placeholder="Number Address and Street"
-                      onChange={handleNumberAddress}
-                      size=""
-                    />
-                  </div>
-                </div>
-
-                {/* Payment */}
-                <div className={cx("checkout-payment")}>
-                  <h1>Payment</h1>
-                  <p>All transactions are secure and encrypted</p>
-
-                  {/* Cash on Credit Card */}
-                  <div className={cx("credit-card")}>
-                    <div className={cx("choose-credit-card")}>
-                      <input
-                        name="paymentMethod"
-                        type="radio"
-                        className={cx("radio")}
-                        value={"payOS"}
-                        onChange={(e) => setPaymentRadio(e.target.value)}
-                      />
-                      <label htmlFor="radio" className={cx("radioLabel")}>
-                        {" "}
-                        <h4>PayOS</h4>
-                      </label>
+              <Form onFinish={() => handleCheckout(paymentRadio)}>
+                <div className={cx("checkout-input")}>
+                  <div className={cx("checkout-contact")}>
+                    <h1>Contact</h1>
+                    <div className={cx("checkout-contact-name")}>
+                      <Form.Item
+                        name="firstName"
+                        rules={[{ required: true, message: 'Please input your first name!' }]}
+                      >
+                        <Input placeholder="First Name" size="large" style={{ width: 335 }} />
+                      </Form.Item>
+                      <Form.Item
+                        name="lastName"
+                        rules={[{ required: true, message: 'Please input your last name!' }]}
+                      >
+                        <Input placeholder="Last Name" size="large" style={{ width: 335 }} />
+                      </Form.Item>
                     </div>
 
-                    <div className={cx("cards-display")}>
-                      <img
-                        style={{ width: "100%", height: "100%" }}
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTyOkJX2-C9OCpJq_Mz8WybGo2SS0gSfkHJw&s"
-                        alt="mastercard"
-                      />
-                      {/* <img src={assets.visa} alt="visa" /> */}
+                    <Form.Item
+                      name="phone"
+                      rules={[{ required: true, message: 'Please input your phone number!' }]}
+                    >
+                      <Input placeholder="Phone Number" size="large" />
+                    </Form.Item>
+                  </div>
+
+                  <div className={cx("checkout-delivery")}>
+                    <h1>Address</h1>
+                    <div className={cx("checkout-delivery_address")}>
+                      <Form.Item
+                        name="province"
+                        rules={[{ required: true, message: 'Please select a province!' }]}
+                      >
+                        <Select
+                          placeholder="Select Province"
+                          size="default"
+                          style={{ width: 680 }}
+                          onChange={handleProvince}
+                          options={provinceList.map((data) => ({
+                            value: data.province_id,
+                            label: data.province_name,
+                          }))}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        name="district"
+                        rules={[{ required: true, message: 'Please select a district!' }]}
+                      >
+                        <Select
+                          placeholder="Select District"
+                          size="default"
+                          style={{ width: 680 }}
+                          onChange={handleDistrict}
+                          options={districtList.map((data) => ({
+                            value: data.district_id,
+                            label: data.district_name,
+                          }))}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        name="ward"
+                        rules={[{ required: true, message: 'Please select a ward!' }]}
+                      >
+                        <Select
+                          placeholder="Select Ward"
+                          size="default"
+                          style={{ width: 680 }}
+                          onChange={handleWard}
+                          options={wardList.map((data) => ({
+                            value: data.ward_id,
+                            label: data.ward_name,
+                          }))}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        name="numberAddress"
+                        rules={[{ required: true, message: 'Please input your address!' }]}
+                      >
+                        <Input
+                          placeholder="Number Address and Street"
+                          onChange={handleNumberAddress}
+                          size="large"
+                        />
+                      </Form.Item>
                     </div>
                   </div>
-                </div>
 
-                {/* Credit Card Form */}
-                {/* <div className={cx("credit-card-form")}>
-                  <Input placeholder="Card Number" size="large" />
-                  <div className={cx("credit-card-code-number")}>
-                    <Input
-                      placeholder="Expiration Date(MM//YY)"
-                      size="large"
-                      style={{ width: 335 }}
-                    />
-                    <Input
-                      placeholder="Security Code"
-                      size="large"
-                      style={{ width: 335 }}
-                    />
+                  {/* Payment */}
+                  <div className={cx("checkout-payment")}>
+                    <h1>Payment</h1>
+                    <p>All transactions are secure and encrypted</p>
+
+                    {/* PayOS */}
+                    <div className={cx("credit-card")}>
+                      <div className={cx("choose-credit-card")}>
+                        <input
+                          name="paymentMethod"
+                          type="radio"
+                          className={cx("radio")}
+                          value={"payOS"}
+                          onChange={(e) => setPaymentRadio(e.target.value)}
+                          checked={paymentRadio === "payOS"}
+                        />
+                        <label htmlFor="radio" className={cx("radioLabel")}>
+                          <h4>PayOS</h4>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Cash on delivery */}
+                    {/* <div className={cx("cash-on-delivery")}>
+                      <div className={cx("choose-cash-on-delivery")}>
+                        <input
+                          name="paymentMethod"
+                          type="radio"
+                          className={cx("radio")}
+                          value={"cash"}
+                          onChange={(e) => setPaymentRadio(e.target.value)}
+                          checked={paymentRadio === "cash"}
+                        />
+                        <label htmlFor="radio" className={cx("radioLabel")}>
+                          <h4>Cash on Delivery</h4>
+                        </label>
+                      </div>
+                    </div> */}
                   </div>
 
-                  <Input
-                    placeholder="Name on card "
-                    size="large"
-                    type="email"
-                  />
-                </div> */}
-
-                {/* Cash on delivery */}
-                <div className={cx("cash-on-delivery")}>
-                  <div className={cx("choose-cash-on-delivery")}>
-                    <input
-                      name="paymentMethod"
-                      type="radio"
-                      className={cx("radio")}
-                      value={"cash"}
-                      onChange={(e) => setPaymentRadio(e.target.value)}
-                    />
-                    <label htmlFor="radio" className={cx("radioLabel")}>
-                      <h4>Cash on Delivery</h4>
-                    </label>
-                  </div>
+                  <button className={cx("pay-now-btn")} type="submit">
+                    Pay now
+                  </button>
                 </div>
-              </div>
+              </Form>
             </ConfigProvider>
-            <button
-              className={cx("pay-now-btn")}
-              onClick={() => handleCheckout(paymentRadio)}
-            >
-              Pay now
-            </button>
           </div>
         </div>
         <div className={cx("payments")}>

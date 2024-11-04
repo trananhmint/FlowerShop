@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../../redux/features/userSlice'
 import axios from 'axios'
-import api from '../../config/axios'
+import api from '../../configs/axios'
 
 function ProfilePage() {
   const [form] = useForm()

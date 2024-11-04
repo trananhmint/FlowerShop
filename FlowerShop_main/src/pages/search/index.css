@@ -1,7 +1,8 @@
 .search {
   display: flex;
   gap: 42px;
-  flex-direction: row;
+  /* flex-direction: row; */
+  justify-content: center;
   min-height: 100vh;
   padding: 15px 10px 15px 10px;
   background-color: #e3e3e3;

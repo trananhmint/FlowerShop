@@ -6,7 +6,7 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const token = JSON.parse(localStorage.getItem("token"));
-  console.log(token, "context");
+  // console.log(token, "context");
 
   const [cartItems, setCartItems] = useState([]);
 
@@ -43,7 +43,10 @@ export const CartProvider = ({ children }) => {
     const response = await getCartList(
       JSON.parse(localStorage.getItem("token"))
     );
-    console.log(response.length, "getCartContext");
+
+    
+    
+    console.log(response, "cart");
 
     setCartItems(response);
   };
@@ -63,9 +66,9 @@ export const CartProvider = ({ children }) => {
     // setCartItems()
   };
 
-  useEffect(() => {
-    getCart();
-  }, []);
+  // useEffect(() => {
+  //   getCart();
+  // }, []);
 
   return (
     <CartContext.Provider

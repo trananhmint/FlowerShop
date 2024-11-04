@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import * as httpRequest from "../util/httpRequest";
+import * as httpRequest from "../utils/httpRequest";
 
 export const checkoutOrder = async (token, checkout) => {
   try {

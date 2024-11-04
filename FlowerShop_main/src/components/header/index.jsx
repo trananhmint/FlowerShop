@@ -8,14 +8,18 @@ import { useSelector } from "react-redux";
 import HeadlessTippy from "@tippyjs/react/headless";
 import { Input } from "antd";
 import Wrapper from "../wrapper";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../contexts/CartContext";
 
 const { Search } = Input;
 
 function Header() {
   const navigate = useNavigate();
-  const cartItems = useSelector((store) => store.cart.items); // Assuming cart structure
-  const { getCart } = useCart();
+  // const cartItems = useSelector((store) => store.cart.items);
+  const { cartItems, getCart } = useCart();
+
+  const cartLength = cartItems?.flatMap((item) => {
+    return item.orderDetails;
+  });
 
   const dropdownItems = [
     {
@@ -43,7 +47,7 @@ function Header() {
 
   useEffect(() => {
     getCart();
-  }, [getCart]); // Ensure getCart is only called if it changes
+  }, []);
 
   const token = JSON.parse(localStorage.getItem("token"));
 
@@ -54,16 +58,19 @@ function Header() {
   return (
     <div className="header">
       <div className="header_col">
-        <Link to="/">Flowers</Link>
+        <Link to="/search">Flowers</Link>
         <Link to="/">Our Story</Link>
       </div>
       <div className="header_logo">
-        <img src={logo} alt="Espoir Logo" />
+        <a href="/">
+          <img src={logo} alt="Espoir Logo" />
+        </a>
       </div>
       <div className="header_col">
         <HeadlessTippy
           interactive
           placement="bottom"
+          appendTo={document.body}
           render={(attrs) => (
             <div className="box" tabIndex="-1" {...attrs}>
               <Wrapper>
@@ -102,7 +109,7 @@ function Header() {
           disabled={!token}
           onClick={() => navigate("/cart")}
         >
-          <Badge count={cartItems?.length}>
+          <Badge count={cartLength?.length}>
             <i className="bi bi-cart3"></i>
           </Badge>
         </button>

@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import { Checkbox, Divider, Pagination, Select } from "antd";
-import ProductCard from "../../component/product-card";
+import ProductCard from "../../components/product-card";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import { getProductList } from "../../services/productService";
 
 function SearchPage() {
   const location = useLocation();
-  const searchValue = location.state.search;
+  const searchValue = location.state?.search || "";
 
   const [flowers, setFlowers] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortDesc, setSortDesc] = useState(false);
   const pageSize = 20;
 
   const CheckboxGroup = Checkbox.Group;
@@ -47,15 +48,19 @@ function SearchPage() {
   // };
 
   const fetchProductList = async () => {
-    const response = await getProductList(currentPage, pageSize, searchValue);    
+    const response = await getProductList(
+      currentPage,
+      pageSize,
+      searchValue,
+      sortDesc
+    );
     setFlowers(response.data);
     setSearchResult(response);
   };
 
   useEffect(() => {
     fetchProductList();
-  }, [currentPage, searchValue]);
-
+  }, [currentPage, searchValue, sortDesc]);
 
   const onChange = (list) => {
     setCheckedList(list);
@@ -73,7 +78,7 @@ function SearchPage() {
   return (
     <div>
       <div className="search">
-        <div className="search_option">
+        {/* <div className="search_option">
           <div>
             <Dropdown title="Category">
               <Checkbox
@@ -90,25 +95,20 @@ function SearchPage() {
               />
             </Dropdown>
           </div>
-        </div>
+        </div> */}
         <div className="search_product">
           <div className="search_header">
             <h4>Search results</h4>
             <div>
               <span>Sort by: </span>
-              <Select defaultValue="price-asc">
-                <Select.Option value="price-asc">
-                  Price (Lowest to hightest)
-                </Select.Option>
-                <Select.Option value="price-desc">
-                  Price (Highest to lowest)
-                </Select.Option>
-                <Select.Option value="rat-asc">
-                  Rating (Lowest to hightest)
-                </Select.Option>
-                <Select.Option value="rat-desc">
-                  Rating (Hightest to Lowest)
-                </Select.Option>
+              <Select
+                defaultValue={false}
+                onChange={(value) => {
+                  setSortDesc(value);
+                }}
+              >
+                <Select.Option value={false}>Name: A -&gt; Z</Select.Option>
+                <Select.Option value={true}>Name: Z -&gt; A</Select.Option>
               </Select>
             </div>
           </div>

@@ -12,13 +12,19 @@ import {
   updateCartItem,
 } from "../../services/cartService";
 
-import { useCart } from "../../context/CartContext";
-import CartShopItem from "../../component/cart-shop-item";
+import { useCart } from "../../contexts/CartContext";
+import CartShopItem from "../../components/cart-shop-item";
 
 function Cart() {
   const token = JSON.parse(localStorage.getItem("token"));
   const navigate = useNavigate();
-  const { getCart } = useCart();
+  const { getCart, cartItems } = useCart();
+
+  const cartLength = cartItems?.flatMap((item) => {
+    return item.orderDetails;
+  });
+
+  const [sort, setSort] = useState(true);
 
   const [cart, setCart] = useState([]);
 
@@ -54,10 +60,12 @@ function Cart() {
     fetchDeleteCartItem(cartItemId);
   };
 
-  const totalPrice = 0;
-  //  cart.reduce((accumulator, item) => {
-  //   return accumulator + item.paidPrice;
-  // }, 0);
+  console.log(radioOption, "radioOption");
+
+  const totalPrice = 
+   radioOption?.orderDetails?.reduce((accumulator, item) => {
+    return accumulator + item.paidPrice;
+  }, 0) || 0;
 
   const handleRadioOption = (item) => {
     setRadioOption(item);
@@ -82,10 +90,10 @@ function Cart() {
         <div className="cart_header">
           <h1>Cart</h1>
 
-          <span> {cart.length} items in your Cart</span>
+          <span> {cartLength?.length || 0} items in your Cart</span>
         </div>
         <div className="cart-body">
-          {cart.length > 0 ? (
+          {cart?.length > 0 ? (
             cart.map((item, index) => {
               return (
                 <CartItem
@@ -118,7 +126,7 @@ function Cart() {
           {/* <Link to="/checkout"> */}
           <button
             style={
-              cart.length === 0
+              cart?.length === 0
                 ? {
                     backgroundColor: "grey",
                     opacity: 0.6,
@@ -126,7 +134,7 @@ function Cart() {
                   }
                 : {}
             }
-            disabled={cart.length === 0}
+            disabled={cart?.length === 0}
             onClick={() => handleCheckout(radioOption)}
           >
             Check Out
@@ -140,11 +148,11 @@ function Cart() {
 
 const CartItem = ({
   item,
-
   handleUpdateCart,
   handleDeleteCart,
   handleRadioOption,
-}) => {  
+}) => {
+  // console.log(item.orderDetails[0].orderDetailId);
 
   return (
     <div className="cart-item" style={{ width: "900px" }}>
@@ -153,7 +161,7 @@ const CartItem = ({
           <input
             className="radio-option"
             type="radio"
-            value={item.orderDetails[0].orderDetailId}
+            // value={item.orderDetails[0].orderDetailId}
             name="radio-option"
             onChange={() => {
               handleRadioOption(item);
@@ -168,7 +176,12 @@ const CartItem = ({
       <div className="cart-item_products">
         {item.orderDetails.map((i, index) => {
           return (
-            <CartShopItem key={index} info={i} handleUpdateCart={handleUpdateCart} handleDeleteCart={handleDeleteCart}/>
+            <CartShopItem
+              key={index}
+              info={i}
+              handleUpdateCart={handleUpdateCart}
+              handleDeleteCart={handleDeleteCart}
+            />
           );
         })}
       </div>
